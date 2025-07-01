@@ -29,12 +29,19 @@ const formSchema = z.object({
   details: z.string().optional(),
 });
 
-const daysOfWeek = ['月', '火', '水', '木', '金', '土', '日'];
-const timeSlots = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
+interface WeeklyScheduleProps {
+  displayStartTime?: string; // HH:MM format
+  displayEndTime?: string;   // HH:MM format
+}
 
-const WeeklySchedule: React.FC = () => {
+const daysOfWeek = ['月', '火', '水', '木', '金', '土', '日'];
+
+const WeeklySchedule: React.FC<WeeklyScheduleProps> = ({ displayStartTime = "00:00", displayEndTime = "24:00" }) => {
   const events = useSelector((state: RootState) => state.schedule.events);
   const dispatch = useDispatch();
+
+  const filteredTimeSlots = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`)
+    .filter(time => time >= displayStartTime && time < displayEndTime);
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<ScheduleEvent | null>(null);
@@ -86,7 +93,7 @@ const WeeklySchedule: React.FC = () => {
         ))}
 
         {/* Time slots and schedule cells */} 
-        {timeSlots.map(time => (
+        {filteredTimeSlots.map(time => (
           <React.Fragment key={time}>
             <div className="col-span-1 text-right pr-2 text-sm border-r pt-2">
               {time}

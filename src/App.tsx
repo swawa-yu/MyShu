@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import WeeklySchedule from "./components/WeeklySchedule";
 import ScheduleForm from "./components/ScheduleForm";
 import { Button } from "./components/ui/button";
@@ -6,11 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
 import { addEvent } from "./store/scheduleSlice";
 import html2canvas from "html2canvas";
+import { Input } from "./components/ui/input";
+import { Label } from "./components/ui/label";
 
 function App() {
   const dispatch = useDispatch();
   const events = useSelector((state: RootState) => state.schedule.events);
   const scheduleRef = useRef<HTMLDivElement>(null);
+
+  const [displayStartTime, setDisplayStartTime] = useState("00:00");
+  const [displayEndTime, setDisplayEndTime] = useState("24:00");
 
   // Load schedule from URL on initial render
   useEffect(() => {
@@ -57,8 +62,26 @@ function App() {
           <Button>スケジュールを追加</Button>
         </ScheduleForm>
       </div>
+      <div className="flex items-center space-x-2 mb-4">
+        <Label htmlFor="displayStartTime">表示開始時刻:</Label>
+        <Input
+          id="displayStartTime"
+          type="time"
+          value={displayStartTime}
+          onChange={(e) => setDisplayStartTime(e.target.value)}
+          className="w-32"
+        />
+        <Label htmlFor="displayEndTime">表示終了時刻:</Label>
+        <Input
+          id="displayEndTime"
+          type="time"
+          value={displayEndTime}
+          onChange={(e) => setDisplayEndTime(e.target.value)}
+          className="w-32"
+        />
+      </div>
       <div ref={scheduleRef}>
-        <WeeklySchedule />
+        <WeeklySchedule displayStartTime={displayStartTime} displayEndTime={displayEndTime} />
       </div>
     </div>
   );
