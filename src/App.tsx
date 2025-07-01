@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ScheduleTable from './components/ScheduleTable';
+import CanvasScheduleTable from './components/CanvasScheduleTable';
 import ScheduleForm from './components/ScheduleForm';
 import { Day, Schedule } from './types';
 
@@ -46,7 +47,12 @@ const App: React.FC = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">MyShu - 週間スケジュールエディタ</h1>
-      <ScheduleTable
+      {/* <ScheduleTable
+        schedules={schedules}
+        onScheduleClick={openForm}
+        onScheduleEdit={openEditForm}
+      /> */}
+      <CanvasScheduleTable
         schedules={schedules}
         onScheduleClick={openForm}
         onScheduleEdit={openEditForm}

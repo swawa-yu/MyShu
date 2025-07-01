@@ -33,17 +33,17 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ schedules, onScheduleClic
                 ))}
                 {[...Array(24)].map((_, hour) => (
                     <React.Fragment key={hour}>
-                        <div className={`relative h-24 border-b ${hour === 0 ? 'border-t' : ''}`}>
+                        <div className={`relative h-7 border-b ${hour === 0 ? 'border-t' : ''} text-xs`}>
                             <div className="absolute top-0 left-0">{hour}:00</div>
                         </div>
                         {days.map(day => (
                             <div
                                 key={`${day}-${hour}`}
-                                className={`relative h-24 border-b ${hour === 0 ? 'border-t' : ''} border-r ${day === days[0] ? 'border-l' : ''}`}
+                                className={`relative h-7 border-b ${hour === 0 ? 'border-t' : ''} border-r ${day === days[0] ? 'border-l' : ''}`}
                                 onClick={(e) => {
                                     const rect = e.currentTarget.getBoundingClientRect();
                                     const clickY = e.clientY - rect.top;
-                                    const minute = Math.floor((clickY / rect.height) * 60);
+                                    const minute = Math.floor((clickY / rect.height) * 60 / 15) * 15;
                                     onScheduleClick(day, hour, minute);
                                 }}
                             >
@@ -56,22 +56,22 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ schedules, onScheduleClic
                 {schedules.map(schedule => {
                     const startMinutes = schedule.start.hour * 60 + schedule.start.minute;
                     const endMinutes = schedule.end.hour * 60 + schedule.end.minute;
-                    // TODO: なぜ +15するとよいのかは謎
-                    const topPosition = `calc(${`${(startMinutes / (24 * 60 + 15)) * 100}%`} + ${headerHeight}px)`;
-                    const bottomPosition = `calc(${`${(endMinutes / (24 * 60 + 15)) * 100}%`} + ${headerHeight}px)`;
-                    const height = `calc(${bottomPosition} - ${topPosition}) - 1px`;
+                    // TODO: なぜ +54するとよいのかは謎
+                    const topPosition = `calc(${`${(startMinutes / (24 * 60 + 54)) * 100}%`} + ${headerHeight}px)`;
+                    const bottomPosition = `calc(${`${(endMinutes / (24 * 60 + 54)) * 100}%`} + ${headerHeight}px)`;
+                    const height = `calc(${bottomPosition} - ${topPosition})`;
                     console.log(topPosition, bottomPosition, height);
 
                     return (
                         <div
                             key={schedule.id}
-                            className="absolute text-white p-1 cursor-pointer hover:opacity-80 pointer-events-auto rounded"
+                            className="absolute text-white p-1 cursor-pointer hover:opacity-80 pointer-events-auto rounded text-xs"
                             style={{
-                                top: topPosition,
-                                height: `calc(${height} - 6px)`,
+                                top: `calc(${topPosition} + 1px)`,
+                                height: `calc(${height} - 1px - 0px)`,
                                 left: `${(days.indexOf(schedule.start.day) + 1) / (days.length + 1) * 100}%`,
                                 right: `calc(${(days.length - days.indexOf(schedule.start.day) - 1) / (days.length + 1) * 100}% + 1px)`,
-                                margin: `3px`,
+                                margin: `0px`,
                                 backgroundColor: schedule.color,
                             }}
                             onClick={(e) => {
@@ -84,7 +84,7 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ schedules, onScheduleClic
                     );
                 })}
             </div>
-        </div>
+        </div >
     );
 };
 
