@@ -1,9 +1,11 @@
+import WeeklySchedule from "./components/WeeklySchedule";
+
 function App() {
   return (
     <>
-      <h1>MyShu</h1>
+      <WeeklySchedule />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
