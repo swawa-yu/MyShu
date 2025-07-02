@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
 import { addEvent } from "./store/scheduleSlice";
 import html2canvas from "html2canvas";
-import { Input } from "./components/ui/input";
-import { Label } from "./components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 function App() {
   const dispatch = useDispatch();
